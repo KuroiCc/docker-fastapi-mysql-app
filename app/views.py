@@ -5,14 +5,10 @@ from starlette.status import HTTP_302_FOUND
 from fastapi.staticfiles import StaticFiles
 from app.configs import Config
 from app.utilities.session import Session
+from app.utilities.save_image import save_image
 from app.models.auth import AuthModel
 from app.models.articles import ArticleModel
 from app.utilities.check_login import check_login
-from PIL import Image
-import shutil
-import pyheif
-from pathlib import Path
-import time
 
 
 app = FastAPI()
@@ -98,33 +94,13 @@ def articles_index(request: Request, session_id=Cookie(default=None)):
 @check_login
 def post_article(title: str = Form(...), body: str = Form(...), image: UploadFile = Form(...), session_id=Cookie(default=None)):
     # この辺は画像null　おkかどうかで処理を変えてください
-    upload_dir_path: str = None
     if image:
-        suffix = Path(image.filename).suffix
-        fileobj = image.file
-        upload_dir_format = '/images/' + str(time.time())
-        # ios画像対応しない場合はここいらない
-        if suffix == '.heic' or suffix == '.HEIC':
-            heif_file = pyheif.read(fileobj)
-            data = Image.frombytes(
-                heif_file.mode,
-                heif_file.size,
-                heif_file.data,
-                "raw",
-                heif_file.mode,
-                heif_file.stride,
-            )
-            upload_dir_path = upload_dir_format + '.jpeg'
-            data.save('app/statics' + upload_dir_path, "JPEG")
-        else:
-            upload_dir_path = upload_dir_format + suffix
-            with open('app/statics' + upload_dir_path,'wb+') as f:
-                shutil.copyfileobj(fileobj, f)
-
+        upload_dir_path: str = save_image(image)
     article_model = ArticleModel(config)
     user_id = session.get(session_id).get("user").get("id")
     article_model.create_article(user_id, title, body, upload_dir_path)
     return RedirectResponse("/articles", status_code=HTTP_302_FOUND)
+
 
 @app.get("/article/create")
 @check_login
