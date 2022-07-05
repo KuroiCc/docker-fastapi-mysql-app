@@ -5,7 +5,7 @@
 
 ### 手順
 1. `docker-fastapi-mysql-app/docker/fastapi/requirements.txt`にパッケージ名を追記する（バージョンは省略可）
-  > ⚠️普段`appフォルダ`をエディタで開いている場合は、もう一つ上の階層にある`docker-fastapi-mysql-app`を開くと`docker`というフォルダが見つかると思います
+    > ⚠️普段`appフォルダ`をエディタで開いている場合は、もう一つ上の階層にある`docker-fastapi-mysql-app`を開くと`docker`というフォルダが見つかると思います
   - 以下の画像は`pillow`をインストールしたい場合の例
   <img width="600" alt="requirements_text" src="images/requirements_text.png">
 2. Macの場合はターミナル、Windowsの場合はコマンドプロンプトで `docker-fastapi-mysql-appフォルダ`に移動し、`docker-compose build`を実行
