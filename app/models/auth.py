@@ -38,6 +38,17 @@ class AuthModel(AbstractModel):
         sql = "INSERT INTO users(username, password) VALUE (%s, %s);"
         self.execute(sql, username, hashed_password)
 
+    def create_user_with_role(self, username, password, role):
+        """
+        新規ユーザ作成
+        :param username: ユーザ名
+        :param password: パスワード
+        :return:
+        """
+        hashed_password = self.hash_password(password)
+        sql = "INSERT INTO users(username, password, role) VALUE (%s, %s, %s);"
+        self.execute(sql, username, hashed_password, role)
+
     def find_user_by_name_and_password(self, username, password):
         """
         ユーザ名とパスワードからユーザを探す

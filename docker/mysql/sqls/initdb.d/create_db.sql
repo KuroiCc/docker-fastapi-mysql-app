@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS users
     id         int(12) primary key auto_increment,
     username   varchar(100) not null,
     password   varchar(100) not null,
-    created_at datetime     not null default CURRENT_TIMESTAMP
+    created_at datetime     not null default CURRENT_TIMESTAMP,
+    role       varchar(100) not null default 'user'
 ) CHARACTER SET UTF8
   COLLATE utf8_general_ci;
 
