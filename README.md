@@ -32,4 +32,4 @@
 
 ## 発展
 
-- 外部パッケージを導入したいときは`docker/fastapi/requirements.txt`に追記して，再ビルド
+- 外部パッケージを導入したいときは`docker/fastapi/requirements.txt`に追記して，再ビルド，詳しい手順は[ここ](docs/install-python-package.md)をチェック
