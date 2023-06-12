@@ -1,13 +1,15 @@
-from fastapi import FastAPI, Request, Form, Cookie
+from fastapi import FastAPI, Request, Form, Cookie, UploadFile
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from starlette.status import HTTP_302_FOUND
 from fastapi.staticfiles import StaticFiles
 from app.configs import Config
 from app.utilities.session import Session
+from app.utilities.save_image import save_image
 from app.models.auth import AuthModel
 from app.models.articles import ArticleModel
 from app.utilities.check_login import check_login
+
 
 app = FastAPI()
 app.mount("/app/statics", StaticFiles(directory="app/statics"), name="static")
@@ -88,20 +90,23 @@ def articles_index(request: Request, session_id=Cookie(default=None)):
     })
 
 
+@app.post("/article/create")
+@check_login
+def post_article(title: str = Form(...), body: str = Form(...), image: UploadFile = Form(...), session_id=Cookie(default=None)):
+    # この辺は画像null　おkかどうかで処理を変えてください
+    if image:
+        upload_dir_path: str = save_image(image)
+    article_model = ArticleModel(config)
+    user_id = session.get(session_id).get("user").get("id")
+    article_model.create_article(user_id, title, body, upload_dir_path)
+    return RedirectResponse("/articles", status_code=HTTP_302_FOUND)
+
+
 @app.get("/article/create")
 @check_login
 def create_article_page(request: Request, session_id=Cookie(default=None)):
     user = session.get(session_id).get("user")
     return templates.TemplateResponse("create-article.html", {"request": request, "user": user})
-
-
-@app.post("/article/create")
-@check_login
-def post_article(title: str = Form(...), body: str = Form(...), session_id=Cookie(default=None)):
-    article_model = ArticleModel(config)
-    user_id = session.get(session_id).get("user").get("id")
-    article_model.create_article(user_id, title, body)
-    return RedirectResponse("/articles", status_code=HTTP_302_FOUND)
 
 
 @app.get("/article/{article_id}")

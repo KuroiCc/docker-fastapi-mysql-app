@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
     <div class="content">
-        <form action="{{ url_for("post_article") }}" method="post">
+        <form action="{{ url_for("post_article") }}" method="post"  enctype="multipart/form-data">
             <div>
                 <label for="title">タイトル</label>
                 <input id="title" type="text" name="title"/>
@@ -9,6 +9,10 @@
             <div>
                 <label for="body">内容</label>
                 <textarea id="body" name="body" rows="20" placeholder=""></textarea>
+            </div>
+            <div>
+                <label for="image">画像</label>
+                <input type="file" id="image" name="image">
             </div>
             <div>
                 <button type="submit">投稿</button>

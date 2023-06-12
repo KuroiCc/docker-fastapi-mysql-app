@@ -26,13 +26,14 @@ class ArticleModel(AbstractModel):
         sql = "SELECT * FROM articles INNER JOIN users u on articles.user_id = u.id WHERE articles.id=%s"
         return self.fetch_one(sql, article_id)
 
-    def create_article(self, user_id, title, body):
+    def create_article(self, user_id, title, body, image_path):
         """
         新しく記事を作成する
         :param user_id: 投稿したユーザのOD
         :param title: 記事のタイトル
         :param body: 記事の本文
+        :image_path: 画像のパス(appは含まない方が良い)
         :return: None
         """
-        sql = "INSERT INTO articles(user_id, title, body) VALUE (%s, %s, %s);"
-        self.execute(sql, user_id, title, body)
+        sql = "INSERT INTO articles(user_id, title, body, image_path) VALUE (%s, %s, %s, %s);"
+        self.execute(sql, user_id, title, body, image_path)
