@@ -92,7 +92,7 @@ def articles_index(request: Request, session_id=Cookie(default=None)):
 
 @app.post("/article/create")
 @check_login
-def post_article(title: str = Form(...), body: str = Form(...), image: UploadFile = Form(...), session_id=Cookie(default=None)):
+def post_article(title: str = Form(...), body: str = Form(...), image: UploadFile = Form(None), session_id=Cookie(default=None)):
     # この辺は画像null　おkかどうかで処理を変えてください
     if image:
         upload_dir_path: str = save_image(image)
