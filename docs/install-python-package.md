@@ -9,10 +9,12 @@
 
     <img width="600" alt="requirements_text" src="images/requirements_text.png">
 
-2. Macの場合はターミナル、Windowsの場合はコマンドプロンプトで `docker-fastapi-mysql-appフォルダ`に移動し、`docker-compose build`を実行
+2. Macの場合はターミナル、Windowsの場合はコマンドプロンプトで `docker-fastapi-mysql-appフォルダ`に移動します
+
+3. macの場合は`sh ./docker/docker-rebuild-fastapi.sh`を実行、windowsの場合は`.\docker\docker-rebuild-fastapi.bat`を実行する
     - `docker-compose up`を実行中の場合は一度止めてください
 
-3. 完了したら再度`docker-compose up`を実行する
+4. 完了したら再度`docker-compose up`を実行する
     - 完了すると以下の画像のようなメッセージが出る
 
     <img width="600" alt="build_result" src="images/build_result.png">
