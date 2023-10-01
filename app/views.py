@@ -94,7 +94,8 @@ def articles_index(request: Request, session_id=Cookie(default=None)):
 @check_login
 def post_article(title: str = Form(...), body: str = Form(...), image: UploadFile = Form(None), session_id=Cookie(default=None)):
     # この辺は画像null　おkかどうかで処理を変えてください
-    if image:
+    upload_dir_path = None
+    if image.filename:
         upload_dir_path: str = save_image(image)
     article_model = ArticleModel(config)
     user_id = session.get(session_id).get("user").get("id")
